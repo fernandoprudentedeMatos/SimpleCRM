@@ -28,6 +28,8 @@ namespace SimpleCRM.Services
 
         public void Update(CostumerModel model)
         {
+            this.ValidateModel(model);
+
             try
             {
                 repository.Update(model);
@@ -42,7 +44,10 @@ namespace SimpleCRM.Services
 
         public void Insert(CostumerModel model)
         {
+            this.ValidateModel(model);
+
             model.Id = null;
+            model.DateCreated = DateTime.Now;
 
             if (repository.GetAll().Any(c => c.Nome.Equals(model.Nome)))
                 throw new InvalidServiceRequestException("Já existe um cliente com o nome informado.");
@@ -66,6 +71,18 @@ namespace SimpleCRM.Services
                 throw new InvalidServiceRequestException("Cliente inexistente para exclusão.");
 
             repository.Delete(costumer);
+        }
+
+        private void ValidateModel(CostumerModel model)
+        {
+            if (model == null)
+                throw new InvalidServiceRequestException("Cliente deve ser informado.");
+
+            if (string.IsNullOrWhiteSpace(model.Nome))
+                throw new InvalidServiceRequestException("Nome de cliente deve ser informado");
+
+            if (string.IsNullOrWhiteSpace(model.Email))
+                throw new InvalidServiceRequestException("Email de cliente deve ser informado");
         }
     }
 }

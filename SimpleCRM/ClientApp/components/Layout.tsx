@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { NavMenu } from './NavMenu';
+import { Messages } from "./Messages";
 
 export interface LayoutProps {
     children?: React.ReactNode;
@@ -13,6 +14,7 @@ export class Layout extends React.Component<LayoutProps, {}> {
                     <NavMenu />
                 </div>
                 <div className='col-sm-9'>
+                    <Messages/>
                     { this.props.children }
                 </div>
             </div>
